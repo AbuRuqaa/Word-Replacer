@@ -1,0 +1,20 @@
+﻿<Window x:Class="WordReplacer_Finale.ProgressBar2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WordReplacer_Finale"
+        mc:Ignorable="d"
+        Closing ="onClosing"
+        ResizeMode="CanMinimize"
+        Title="ProgressBar" Height="150" Width="300">
+    
+    
+    <Grid>
+       
+        <ProgressBar Minimum="0"  Name="pbStatus" VerticalAlignment="Center" Height="25" Maximum="100" Margin="25,25,25,30" />
+        <TextBlock Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="25,25,25,30"/>
+        
+
+    </Grid>
+</Window>
