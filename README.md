@@ -4,7 +4,7 @@
 
 
 ## About
-Word Replacer will let you replace words from multiple docx files from a folder and its sub folders
+Word Replacer 
 
 
 
@@ -18,7 +18,7 @@ Word Replacer will let you replace words from multiple docx files from a folder 
 ### Progress Tracking
 ![](https://github.com/AbuRuqaa/Word-Replacer/blob/main/resources/MainW_ProgressB.png)
 * It will let you see how much files have been replaced
-
+* It has an option to make the replace process case-sesntive
 
 
 
