@@ -4,7 +4,7 @@
 
 
 ## About
-Word Replacer will let you replace word,or a sentence from a whole directory(folder) and its sub folders , with an easy to use GUI.
+Word Replacer will let you replace a word,or a sentence in a multiple docx files(office365 Word) from a whole directory(folder) and its sub folders , with an easy to use GUI.
 
 
 
