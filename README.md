@@ -26,3 +26,6 @@ Word Replacer will let you replace a word,or a sentence in a multiple docx files
 
 
 ### Download
+
+You can download this app from here:
+https://sourceforge.net/projects/word-replacer/ .
