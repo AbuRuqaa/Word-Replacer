@@ -19,6 +19,8 @@ using Xceed.Document;
 using Xceed.Words;
 using System.Threading;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
+
 
 
 
@@ -36,7 +38,8 @@ namespace WordReplacer_Finale
         private bool closePbWindow;
         string[] files;
         private int filePercantage = 0;
-
+        private Regex regex;
+        private string pattren = @"(\.|\s|,)+";
         private string new_word;
         private bool isCaseSenstive;
         public static ProgressBar2 pb = new ProgressBar2();
@@ -84,9 +87,12 @@ namespace WordReplacer_Finale
         {
             string _space = " ";
             //Get values from text boxes
-            replaced_word = _space + ReplacedWord.Text + _space;
 
-            new_word = _space + NewWord.Text + _space;
+
+            replaced_word = ReplacedWord.Text.Trim();//This will remove the leading and triling whitespace
+            
+            
+            new_word =   NewWord.Text  ;
 
             isCaseSenstive = case_sesntive.IsChecked ?? false;
             //making an instence of the backgorundworker methods
@@ -141,7 +147,7 @@ namespace WordReplacer_Finale
             //if a file didn't open this will show up as a popup message
             MessageBoxResult result = MessageBox.Show($"The following file is broken: {file}", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             //if user clicked at "ok" button the method will return true, if he closed the messagebox it will return false and reset the program
-            Console.WriteLine(result);
+            
             if (result == MessageBoxResult.OK)
                 return true;
             else
@@ -160,6 +166,7 @@ namespace WordReplacer_Finale
         }
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs p)
         {
+
             if (closePbWindow)
             {
 
@@ -189,7 +196,7 @@ namespace WordReplacer_Finale
         }
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-
+            regex = new Regex(pattren + replaced_word + pattren);
             bool checkEValue = true;
             BackgroundWorker worker = sender as BackgroundWorker;
             double filesCount = files.Length;
@@ -217,21 +224,26 @@ namespace WordReplacer_Finale
                             }
                             //Replace process  
 
-                            var doc = Xceed.Words.NET.DocX.Load(file);//load the file
+                            Replace doc = new Replace(file); 
+                            
+                            
                             if (!isCaseSenstive)
                             {
-                                doc.ReplaceText(searchValue: replaced_word, newValue: new_word, false, RegexOptions.IgnoreCase);//this method will replace the words in files
+
+
+                                doc.ReplaceWord(replaced_word, new_word, RegexOptions.IgnoreCase);//this method will replace the words in files
                             }
                             else
                             {
-                                doc.ReplaceText(searchValue: replaced_word, newValue: new_word, false);
+
+                                doc.ReplaceWord(replaced_word, new_word, RegexOptions.None);
                             }
 
-                            doc.Save();
+                            
                             counter++;//number of files that have been replaced
 
                             filePercantage = Convert.ToInt32((counter / filesCount) * 100);
-
+                            
                             worker.ReportProgress(filePercantage);//Update the number of files that have been replaced.
 
                         }
@@ -264,6 +276,7 @@ namespace WordReplacer_Finale
                             }
 
 
+
                             else
                             {
                                 worker.ReportProgress(0);
@@ -273,8 +286,7 @@ namespace WordReplacer_Finale
                         }
                         catch (System.IO.IOException s)
                         {
-                            Console.WriteLine(counter);
-                            Console.WriteLine(filesCount);
+                            
                             if (counter + 1 == filesCount)
                             {
                                 Console.WriteLine(1);
@@ -290,6 +302,15 @@ namespace WordReplacer_Finale
                                 continue;
                             }
                         }
+                        catch (RegexMatchTimeoutException)
+                        {
+                            
+                            continue;
+                        }
+                        catch (ArgumentNullException) {
+                            continue;
+                        }
+                        
                     }
                     else
                     {
@@ -300,8 +321,6 @@ namespace WordReplacer_Finale
                 }
 
             }
-
-
 
 
             this.Dispatcher.Invoke(() =>
